@@ -15,12 +15,11 @@ function SignUp() {
 
   const create = async (data) => {
     try {
-      const userData = await authService.signup(data);
+      const userData = await authService.signUp(data);
       if (userData) {
         const userData = await authService.getCurrentUser();
-        if (userData) 
-          dispatch(authLogin(userData));
-          navigate("/");
+        if (userData) dispatch(authLogin(userData));
+        navigate("/");
       }
     } catch (error) {
       setError(error.message);
@@ -47,9 +46,7 @@ function SignUp() {
         </Link>
       </p>
       {error && <p className="text-red-500 text-center">{error}</p>}
-      <form
-        onSubmit={handleSubmit(create)}
-      >
+      <form onSubmit={handleSubmit(create)}>
         <div>
           <Input
             label="Full Name:"
@@ -89,10 +86,7 @@ function SignUp() {
             })}
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-          >
+          <Button type="submit" className="w-full">
             Create Account
           </Button>
         </div>
