@@ -9,14 +9,14 @@ function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
-        title: post ? "post.title" : "",
-        slug: post?.slug || "",
+        title: post?.title || "",
+        slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
       },
     });
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
     if (post) {
@@ -62,24 +62,12 @@ function PostForm({ post }) {
     return "";
   }, []);
 
-  // useEffect(()=>{
-
-  //     const subscription = watch((value, {name})=>{
-  //         if(name === 'title'){
-  //             setValue('slug', slugTransform(value.title))
-  //             {shouldValidate: true}
-  //         }
-  //     })
-
-  // }, [slugTransform, watch, setValue])
-
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
         setValue("slug", slugTransform(value.title), { shouldValidate: true });
       }
     });
-
     return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
@@ -121,7 +109,7 @@ function PostForm({ post }) {
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={appwriteService.getPostPreview(post.featuredImage)}
               alt={post.title}
               className="rounded-lg"
             />
